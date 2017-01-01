@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <p id="add_new_feed_url"><a class="btn btn-default">Add a new feed url &raquo;</a></p>
+    </div>
+    <script>
+        function get_news_text_for_post(main_url,post_url) {
+            window.open(main_url + "?post_url="+post_url);
+        };
+        $(document).ready(function(){
+            $("#add_new_feed_url").click(function () {
+                var feed_url = prompt("Please enter feed url:", "url");
+                if (feed_url != null) {
+                    console.log(feed_url);
+                    $.ajax({
+                        url: "add_feed", data: feed_url, type: "POST", success: function (result) {
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2> My Personal Feeds </h2>
+        <ul>
+            {% for data in feed_list %}
+                <li>Title is:{{data.url}} </li>
+                <ul>
+                    {% for feed_entry in data.all_feeds %}
+                       {%if loop.index < 10 %}
+                            <li>
+                            	{% if feed_entry.image_url != None and feed_entry.image_url !=""%}
+                            	<img src="{{feed_entry.image_url}}" style="width:100px;height:100px;">
+                            	{% endif %}
+                                <a href="{{feed_entry.url}}">{{feed_entry.title}}</a>
+                                <button class="btn btn-default"  onclick="get_news_text_for_post('{{url_for('decode_post')}}','{{feed_entry.url}}')"> Get Post Text </button>
+                            </li>
+                            {% if feed_entry.summary|length >0 %}
+                            <ul>
+                                <li>{{feed_entry.summary|safe}}</li>
+                            </ul>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </ul>
+     </div>
+</div>
+
+{% endblock %}
