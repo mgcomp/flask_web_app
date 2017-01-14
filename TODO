@@ -1,0 +1,6 @@
+1. pysolr -> https://pypi.python.org/pypi/pysolr/3.4.0 
+2. sqlalchemy 
+3. create user database module with sqlalchemy
+4. create documents module with pysolr
+5. create a startup/shotdown script that initializes and shuts down solr and sql databases
+6. news classifier(works in parallel)(wordtovec)?
